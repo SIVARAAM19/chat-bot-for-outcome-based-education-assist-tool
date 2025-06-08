@@ -1,0 +1,593 @@
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - hey there
+
+- intent: goodbye
+  examples: |
+    - bye
+    - goodbye
+    - see you around
+    - see you later
+
+- intent: affirm
+  examples: |
+    - yes
+    - indeed
+    - of course
+    - that sounds good
+    - correct
+
+- intent: deny
+  examples: |
+    - no
+    - never
+    - I don't think so
+    - don't like that
+    - no way
+
+- intent: mood_great
+  examples: |
+    - perfect
+    - very good
+    - great
+    - amazing
+    - wonderful
+    - I am feeling very good
+    - I am great!
+    - I'm good
+
+- intent: mood_unhappy
+  examples: |
+    - sad
+    - very sad
+    - unhappy
+    - bad
+    - very bad
+    - awful
+    - terrible
+    - not very good
+    - extremely sad
+    - so sad
+
+- intent: bot_challenge
+  examples: |
+    - are you a bot?
+    - are you a human?
+    - who are you?
+    - what are you?
+    - are you real
+
+- intent: faculty_subject
+  examples: |
+    - what subject does [sreenath](faculty_name) handle
+    - what subjects does [sreenath](faculty_name) teach
+    - what courses does [sreenath](faculty_name) take
+    - show me the subjects handled by [sreenath](faculty_name)
+    - what is [sreenath](faculty_name) teaching
+    - [sreenath](faculty_name) subject
+    - [sreenath](faculty_name) subjects
+    - what subject is handled by [akila](faculty_name)
+    - what subjects does [Dr. V. Akila](faculty_name) handle
+    - what subject [akila](faculty_name) handle
+    - what subject [sreenath](faculty_name) takes
+    - [sreenath](faculty_name)
+    - [akila](faculty_name)
+    - [Dr. V. Akila](faculty_name)
+    - [Dr. Sreenath](faculty_name)
+    - [Dr. Saruladha](faculty_name)
+    - what courses are taught by [Dr. Saruladha](faculty_name)
+    - what subject does [Dr. Saruladha](faculty_name) teach
+
+- intent: faculty_for_subject
+  examples: |
+    - who is taking computer networks
+    - who teaches computer networks
+    - which faculty handles computer networks
+    - who takes computer networks
+    - faculty for computer networks
+    - who teaches CS208
+    - who is handling Operating Systems
+    - who teaches computer network
+    - computer network
+    - computer networks
+    - operating systems
+    - database management systems
+    - data structures
+    - artificial intelligence
+    - machine learning
+    - who teaches operating systems
+    - faculty for database management
+    - which faculty teaches data structures
+    - who teaches [computer networks](subject_name)
+    - who is taking [operating systems](subject_name)
+    - which faculty handles [database management systems](subject_name)
+    - faculty for [data structures](subject_name)
+    - who teaches [CS208](subject_name)
+    - [computer networks](subject_name)
+    - [operating systems](subject_name)
+
+- intent: student_info
+  examples: |
+    - tell me about student [21CS1001](register_no)
+    - show details of student [21CS1003](register_no)
+    - student information for [21CS1005](register_no)
+    - get details of [21CS1008](register_no)
+    - what are the details of student [2101107056](register_no)
+    - student [21CS1010](register_no)
+    - [21CS1001](register_no)
+    - [21CS1003](register_no)
+    - [2101107056](register_no)
+    - details of [21CS1010](register_no)
+    - information about student [21CS1009](register_no)
+    - find student [21CS1006](register_no)
+    - student details [21CS1001](register_no)
+    - show me information about [21CS1005](register_no)
+    - get info for student [21CS1008](register_no)
+    - lookup student [21CS1003](register_no)
+    - find details for [2101107056](register_no)
+
+- intent: student_by_name
+  examples: |
+    - find student named [AAMIR KHAN](student_name)
+    - show details of [ANJALI](student_name)
+    - get information about [BHARANI](student_name)
+    - student named [GAYATHRI RAMESH](student_name)
+    - details of student [VARSHA](student_name)
+    - [FARAAZ MOHAMMED](student_name) details
+    - [DHIVAGAR](student_name) information
+    - find [CHAIDANYA](student_name)
+    - show me [AAMIR](student_name)'s details
+    - get details of [ANJALI S](student_name)
+    - [GAYATHRI](student_name)
+    - [VARSHA ANJALI](student_name)
+    - who is [AAMIR KHAN](student_name)
+    - who is [VARSHA](student_name)
+    - tell me about [BHARANI](student_name)
+    - information on [GAYATHRI RAMESH](student_name)
+    - lookup [FARAAZ MOHAMMED](student_name)
+    - search for student [DHIVAGAR](student_name)
+    - find info on [CHAIDANYA](student_name)
+    - student [AAMIR KHAN](student_name)
+    - about [ANJALI S](student_name)
+    - tell me about [AAMIR KHAN](student_name)
+    - I want to know about [AAMIR KHAN](student_name)
+    - give me details of [AAMIR KHAN](student_name)
+    - who exactly is [AAMIR KHAN](student_name)
+    - can you tell me about [AAMIR KHAN](student_name)
+    - provide information about [AAMIR KHAN](student_name)
+    - what do you know about [AAMIR KHAN](student_name)
+    - details about student [AAMIR KHAN](student_name)
+    - I'm looking for information on [AAMIR KHAN](student_name)
+    - can you find [AAMIR KHAN](student_name) for me
+
+- intent: students_by_year
+  examples: |
+    - show all students in year [3](year)
+    - list students in [4](year)th year
+    - students in year [3](year)
+    - get students from year [4](year)
+    - year [3](year) students
+    - [4](year)th year students
+    - students of year [3](year)
+    - show me year [4](year) students
+    - list [3](year)rd year students
+    - [4](year) year students
+    - show students in year [3](year)
+    - display all year [4](year) students
+    - who are the [3](year)rd year students
+    - get me all [4](year)th year students
+    - find students in year [3](year)
+    - all students from year [4](year)
+    - show me students from [3](year)rd year
+    - list all [4](year)th year students
+    - students who are in year [3](year)
+    - [4](year) year student list
+    - Show all students in year [3](year)
+    - List all students of year [3](year)
+    - Who are the [4](year)th year students?
+    - Give me a list of all [3](year)rd year students
+    - I want to see all students in year [4](year)
+    - Show me the list of [3](year)rd year students
+    - Display students from year [4](year)
+    - Can you show all [3](year)rd year students?
+    - I need information about year [4](year) students
+    - Tell me about students in year [3](year)
+
+- intent: students_by_semester
+  examples: |
+    - show all students in semester [6](semester)
+    - list students in [8](semester)th semester
+    - students in semester [6](semester)
+    - get students from semester [8](semester)
+    - semester [6](semester) students
+    - [8](semester)th semester students
+    - students of semester [6](semester)
+    - show me semester [8](semester) students
+    - list [6](semester)th semester students
+    - [8](semester) semester students
+    - show students in semester [6](semester)
+    - display all semester [8](semester) students
+    - who are the [6](semester)th semester students
+    - get me all [8](semester)th semester students
+    - find students in semester [6](semester)
+    - all students from semester [8](semester)
+    - show me students from [6](semester)th semester
+    - list all [8](semester)th semester students
+    - students who are in semester [6](semester)
+    - [8](semester) semester student list
+
+- intent: students_by_section
+  examples: |
+    - show all students in section [A](section)
+    - list students in section [A](section)
+    - students in section [A](section)
+    - get students from section [A](section)
+    - section [A](section) students
+    - students of section [A](section)
+    - show me section [A](section) students
+    - list section [A](section) students
+    - [A](section) section students
+    - show students in section [A](section)
+    - display all section [A](section) students
+    - who are the section [A](section) students
+    - get me all section [A](section) students
+    - find students in section [A](section)
+    - all students from section [A](section)
+    - show me students from section [A](section)
+    - list all section [A](section) students
+    - students who are in section [A](section)
+    - [A](section) section student list
+
+- intent: students_by_batch
+  examples: |
+    - show all students in batch [2021-2025](batch)
+    - list students in batch [2020-2024](batch)
+    - students in batch [2021-2025](batch)
+    - get students from batch [2020-2024](batch)
+    - batch [2021-2025](batch) students
+    - students of batch [2020-2024](batch)
+    - show me batch [2021-2025](batch) students
+    - list batch [2020-2024](batch) students
+    - [2021-2025](batch) batch students
+    - show students in batch [2021-2025](batch)
+    - display all batch [2020-2024](batch) students
+    - who are the batch [2021-2025](batch) students
+    - get me all batch [2020-2024](batch) students
+    - find students in batch [2021-2025](batch)
+    - all students from batch [2020-2024](batch)
+    - show me students from batch [2021-2025](batch)
+    - list all batch [2020-2024](batch) students
+    - students who are in batch [2021-2025](batch)
+    - [2020-2024](batch) batch student list
+
+- intent: ask_howru
+  examples: |
+    - how are you
+    - how are you doing
+    - how's it going
+    - how do you do
+    - how are things
+    - how have you been
+    - how's your day
+    - are you okay
+    - are you doing well
+    - how are you feeling today
+    - how are you feeling
+    - how do you feel
+    - are you having a good day
+    - are you having a nice day
+    - how is your day going
+    - how is your day
+    - how is everything
+    - how is life
+    - how's life
+
+- intent: course_by_code
+  examples: |
+    - What is [CS203](course_code)?
+    - Tell me about [CS204](course_code)
+    - I want to know about [CS210](course_code)
+    - Give me details of [CS215](course_code)
+    - Show information for [CS220](course_code)
+    - What's [CS225](course_code) about?
+    - Details of course [CS207](course_code)
+    - What is course code [CS209](course_code)?
+    - Information on [CS211](course_code)
+    - Can you tell me about [CS216](course_code)?
+    - [CS203](course_code)
+    - [CS204](course_code)
+    - [CS210](course_code)
+    - [CS215](course_code)
+    - [CS220](course_code)
+    - [CS225](course_code)
+    - [CS207](course_code)
+    - [CS209](course_code)
+    - [CS211](course_code)
+    - [CS216](course_code)
+    - What does [CS203](course_code) cover?
+    - Syllabus for [CS204](course_code)
+    - Topics in [CS210](course_code)
+    - Content of [CS215](course_code)
+    - What will I learn in [CS220](course_code)?
+    - [CS225](course_code) curriculum
+    - What's taught in [CS207](course_code)?
+    - [CS209](course_code) course details
+    - [CS211](course_code) outline
+    - What's the content of [CS216](course_code)?
+    - Tell me more about [CS203](course_code)
+    - I'd like to know about [CS204](course_code)
+    - Can you explain [CS210](course_code)?
+    - What exactly is [CS215](course_code)?
+    - Give me info on [CS220](course_code)
+    - What can you tell me about [CS225](course_code)?
+    - I'm interested in [CS207](course_code)
+    - Please explain [CS209](course_code)
+    - I need information about [CS211](course_code)
+    - Could you describe [CS216](course_code)?
+    - What are the prerequisites for [CS203](course_code)?
+    - How many credits is [CS204](course_code)?
+    - Is [CS210](course_code) difficult?
+    - When is [CS215](course_code) offered?
+    - Who teaches [CS220](course_code)?
+    - What semester is [CS225](course_code) in?
+    - How is [CS207](course_code) structured?
+    - What's the workload for [CS209](course_code)?
+    - Are there labs in [CS211](course_code)?
+    - What projects are in [CS216](course_code)?
+
+- intent: course_by_name
+  examples: |
+    - What is [Computer Networks](course_name)?
+    - Tell me about [Data Structures](course_name)
+    - I want to know about [Database Management Systems](course_name)
+    - Give me details of [Operating Systems](course_name)
+    - Show information for [Software Engineering](course_name)
+    - What's [Artificial Intelligence](course_name) about?
+    - Details of course [Web Technologies](course_name)
+    - Information on [Information Security](course_name)
+    - Can you tell me about [Computer Organization and Architecture](course_name)?
+    - What is [Object Oriented Programming Languages](course_name)?
+    - [Computer Networks](course_name)
+    - [Data Structures](course_name)
+    - [Database Management Systems](course_name)
+    - [Operating Systems](course_name)
+    - [Software Engineering](course_name)
+    - [Artificial Intelligence](course_name)
+    - [Web Technologies](course_name)
+    - [Information Security](course_name)
+    - [Computer Organization and Architecture](course_name)
+    - [Object Oriented Programming Languages](course_name)
+    - What does [Computer Networks](course_name) cover?
+    - Syllabus for [Data Structures](course_name)
+    - Topics in [Database Management Systems](course_name)
+    - Content of [Operating Systems](course_name)
+    - What will I learn in [Software Engineering](course_name)?
+    - [Artificial Intelligence](course_name) curriculum
+    - What's taught in [Web Technologies](course_name)?
+    - [Information Security](course_name) course details
+    - [Computer Organization and Architecture](course_name) outline
+    - What's the content of [Object Oriented Programming Languages](course_name)?
+    - Tell me more about [Computer Networks](course_name)
+    - I'd like to know about [Data Structures](course_name)
+    - Can you explain [Database Management Systems](course_name)?
+    - What exactly is [Operating Systems](course_name)?
+    - Give me info on [Software Engineering](course_name)
+    - What can you tell me about [Artificial Intelligence](course_name)?
+    - I'm interested in [Web Technologies](course_name)
+    - Please explain [Information Security](course_name)
+    - I need information about [Computer Organization and Architecture](course_name)
+    - Could you describe [Object Oriented Programming Languages](course_name)?
+    - What are the prerequisites for [Computer Networks](course_name)?
+    - How many credits is [Data Structures](course_name)?
+    - Is [Database Management Systems](course_name) difficult?
+    - When is [Operating Systems](course_name) offered?
+    - Who teaches [Software Engineering](course_name)?
+    - What semester is [Artificial Intelligence](course_name) in?
+    - How is [Web Technologies](course_name) structured?
+    - What's the workload for [Information Security](course_name)?
+    - Are there labs in [Computer Organization and Architecture](course_name)?
+    - What projects are in [Object Oriented Programming Languages](course_name)?
+
+- intent: courses_by_semester
+  examples: |
+    - What courses are offered in [3](semester) semester?
+    - Show me all courses in semester [4](semester)
+    - List courses for [5](semester) semester
+    - What subjects are taught in [6](semester) semester?
+    - Which courses are available in semester [7](semester)?
+    - Tell me the courses in [3](semester)rd semester
+    - What are the subjects in semester [4](semester)?
+    - Show courses for semester [5](semester)
+    - I want to know about courses in [6](semester)th semester
+    - List all subjects in [7](semester) semester
+    - Courses in [3](semester) semester
+    - Semester [4](semester) courses
+    - [5](semester)th semester subjects
+    - [6](semester) semester curriculum
+    - What do students study in semester [7](semester)?
+    - What's taught in [3](semester)rd semester?
+    - Give me all courses from semester [4](semester)
+    - What will I learn in semester [5](semester)?
+    - Show me the syllabus for semester [6](semester)
+    - What are the [7](semester)th semester courses?
+    - I need to know the courses for semester [3](semester)
+    - Can you list all subjects in [4](semester)th semester?
+    - What courses should I expect in semester [5](semester)?
+    - Tell me everything about semester [6](semester) courses
+    - What's the course load in semester [7](semester)?
+    - How many courses are there in semester [3](semester)?
+    - Which electives are available in semester [4](semester)?
+    - Are there any lab courses in semester [5](semester)?
+    - What are the core subjects in semester [6](semester)?
+    - Which is the toughest course in semester [7](semester)?
+    - Semester [3](semester) course list
+    - All [4](semester)th semester subjects
+    - Complete list of semester [5](semester) courses
+    - What's offered in semester [6](semester)?
+    - Semester [7](semester) course catalog
+    - What should I register for in semester [3](semester)?
+    - Important courses in semester [4](semester)
+    - Key subjects in [5](semester)th semester
+    - Required courses for semester [6](semester)
+    - What's mandatory in semester [7](semester)?
+
+- intent: courses_by_credits
+  examples: |
+    - Show me courses with [3.0](credits) credits
+    - What courses are worth [1.5](credits) credits?
+    - List all [4.0](credits) credit courses
+    - Which courses have [2.0](credits) credits?
+    - Find courses that are [3.5](credits) credits
+    - I want to know about [4.0](credits) credit courses
+    - Tell me about courses that are [2.0](credits) credits
+    - What are the [3.0](credits) credit courses available?
+    - Show [1.0](credits) credit courses
+    - Display all courses with [4.0](credits) credits
+    - What subjects have [3.0](credits) credits?
+    - Which classes are [2.0](credits) credits?
+    - I need information on [4.0](credits) credit courses
+    - Give me a list of [3.0](credits) credit courses
+    - What are the courses with [1.5](credits) credits?
+    - Show me all [2.0](credits) credit subjects
+    - Which courses are assigned [3.0](credits) credits?
+    - What courses can I take that are [4.0](credits) credits?
+    - Tell me which courses have [2.0](credits) credits
+    - I'm looking for courses with [3.0](credits) credits
+
+- intent: courses_by_type
+  examples: |
+    - Show me all core courses
+    - What elective courses are available?
+    - List all lab courses
+    - Which theory courses can I take?
+    - Find all [core](course_type) courses
+    - I want to know about [elective](course_type) courses
+    - Tell me about [lab](course_type) courses
+    - What are the [theory](course_type) courses available?
+    - Show [core](course_type) courses
+    - Display all [elective](course_type) courses
+    - What subjects are [lab](course_type) courses?
+    - Which classes are [theory](course_type) courses?
+    - I need information on [core](course_type) courses
+    - Give me a list of [elective](course_type) courses
+    - What are the [lab](course_type) courses?
+    - Show me all [theory](course_type) subjects
+    - Which courses are [core](course_type) courses?
+    - What [elective](course_type) courses can I take?
+    - Tell me which courses are [lab](course_type) courses
+    - I'm looking for [theory](course_type) courses
+    - List me btech courses
+    - Show me all btech courses
+    - What btech courses are available?
+    - Tell me about btech courses
+    - List all mtech courses
+    - Show me mtech courses
+    - What mca courses can I take?
+    - Display all phd courses
+    - I want to know about btech courses
+    - Give me information about mtech courses
+    - What are the btech courses offered?
+    - Show me the list of mca courses
+    - Tell me about the phd courses
+
+- intent: course_count
+  examples: |
+    - How many courses are there?
+    - What is the total number of courses?
+    - Count the courses
+    - How many courses are offered in semester 3?
+    - What's the number of courses in semester 5?
+    - Count courses in semester 2
+    - How many elective courses are there?
+    - What is the total number of core courses?
+    - Count the lab courses
+    - How many theory courses are available?
+    - How many courses are there in semester 4?
+    - What's the count of elective courses in semester 6?
+    - How many core courses are in semester 1?
+    - Tell me the number of courses in the curriculum
+    - What's the total course count?
+    - How many courses do we have in semester 7?
+    - Count the number of elective courses in semester 8
+    - How many lab courses are there in semester 3?
+    - What's the total number of theory courses in semester 5?
+    - How many 3-credit courses are there?
+
+- intent: course_prerequisites
+  examples: |
+    - What are the prerequisites for [CS203](course_code)?
+    - Tell me the prerequisites for [Data Structures](course_name)
+    - What courses do I need to take before [CS401](course_code)?
+    - What should I study before taking [Machine Learning](course_name)?
+    - Prerequisites for [CS301](course_code)
+    - What are the pre-requisites for [Database Systems](course_name)?
+    - Which courses are required before [CS204](course_code)?
+    - What do I need to complete before [Computer Networks](course_name)?
+    - Show me prerequisites for [CS302](course_code)
+    - List all prerequisites for [Operating Systems](course_name)
+    - What courses are prerequisites for [CS405](course_code)?
+    - What are the requirements for [Artificial Intelligence](course_name)?
+    - Do I need any prerequisites for [CS101](course_code)?
+    - Are there any prerequisites for [Introduction to Programming](course_name)?
+    - What should I know before taking [CS303](course_code)?
+    - What courses should I complete before [Software Engineering](course_name)?
+    - Tell me what I need to take before [CS402](course_code)
+    - What are the prerequisite courses for [Computer Graphics](course_name)?
+    - Which courses are needed before [CS304](course_code)?
+    - What's required before taking [Web Development](course_name)?
+
+- intent: students_by_type
+  examples: |
+    - Show me all [B.Tech](type) students
+    - List all [M.Tech](type) students
+    - Find [MCA](type) students
+    - Get [PhD](type) students
+    - Who are the [B.Tech](type) students?
+    - Tell me about [M.Tech](type) students
+    - I want to know about [MCA](type) students
+    - Show [B.Tech](type) students
+    - Display all [M.Tech](type) students
+    - What are the [MCA](type) students?
+    - Give me a list of [PhD](type) students
+    - Show me [B.Tech](type) students
+    - List [M.Tech](type) students
+    - Find all [MCA](type) students
+    - Get all [PhD](type) students
+    - Who are the [B.Tech](type) students in the college?
+    - Tell me about the [M.Tech](type) students
+    - I want to know about the [MCA](type) students
+    - Show all [B.Tech](type) students
+    - Display [M.Tech](type) students
+    - What are the names of [MCA](type) students?
+    - Give me a list of all [PhD](type) students
+    - list me [B.Tech](type) students
+    - list me [M.Tech](type) students
+    - list me [MCA](type) students
+    - list me [PhD](type) students
+    - list me B.Tech students
+    - list me M.Tech students
+    - list me MCA students
+    - list me PhD students
+    - list me B.tech students
+    - list me M.tech students
+    - list me mca students
+    - list me phd students
+    - list me B.Tech
+    - list me M.Tech
+    - list me MCA
+    - list me PhD
+    - list me [M.Tech IS](type) students
+    - list me [M.Tech DS](type) students
+    - list me M.Tech IS students
+    - list me M.Tech DS students
+    - list me M.tech IS students
+    - list me M.tech DS students

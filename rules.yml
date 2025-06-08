@@ -1,0 +1,112 @@
+version: "3.1"
+
+rules:
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+  - intent: goodbye
+  - action: action_goodbye
+
+- rule: Say 'I am a bot' anytime the user challenges
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+
+- rule: Greet the user
+  steps:
+  - intent: greet
+  - action: action_greeting
+
+- rule: Handle faculty subject query
+  steps:
+  - intent: faculty_subject
+  - action: action_faculty_query
+
+- rule: Handle faculty for subject query
+  steps:
+  - intent: faculty_for_subject
+  - action: action_faculty_query
+
+- rule: Handle student info query
+  steps:
+  - intent: student_info
+  - action: action_student_query
+
+- rule: Handle student by name query
+  steps:
+  - intent: student_by_name
+  - action: action_student_query
+
+- rule: Handle students by year query
+  steps:
+  - intent: students_by_year
+  - action: action_student_query
+
+- rule: Handle students by semester query
+  steps:
+  - intent: students_by_semester
+  - action: action_student_query
+
+- rule: Handle students by section query
+  steps:
+  - intent: students_by_section
+  - action: action_student_query
+
+- rule: Handle students by batch query
+  steps:
+  - intent: students_by_batch
+  - action: action_student_query
+
+- rule: Handle students by type query
+  steps:
+  - intent: students_by_type
+  - action: action_student_query
+
+- rule: Use query router for any unrecognized intent
+  steps:
+  - intent: nlu_fallback
+  - action: action_query_router
+
+- rule: Respond to how are you questions
+  steps:
+  - intent: ask_howru
+  - action: utter_howru
+
+- rule: Handle course by code query
+  steps:
+  - intent: course_by_code
+  - action: action_course_query
+
+- rule: Handle course by name query
+  steps:
+  - intent: course_by_name
+  - action: action_course_query
+
+- rule: Handle courses by semester query
+  steps:
+  - intent: courses_by_semester
+  - action: action_course_query
+
+- rule: Handle courses by credits query
+  steps:
+  - intent: courses_by_credits
+  - action: action_course_query
+
+- rule: Course by credits
+  steps:
+  - intent: courses_by_credits
+  - action: action_course_query
+
+- rule: Course by type
+  steps:
+  - intent: courses_by_type
+  - action: action_course_query
+
+- rule: Course count
+  steps:
+  - intent: course_count
+  - action: action_course_query
+
+- rule: Course prerequisites
+  steps:
+  - intent: course_prerequisites
+  - action: action_course_query

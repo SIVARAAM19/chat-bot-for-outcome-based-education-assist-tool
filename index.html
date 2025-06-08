@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraAI™ - Intelligent OBE Assistant</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4F46E5;
+            --primary-light: #818CF8;
+            --primary-dark: #3730A3;
+            --secondary-color: #10B981;
+            --text-color: #1F2937;
+            --light-text: #6B7280;
+            --bg-color: #F9FAFB;
+            --white: #FFFFFF;
+            --light-gray: #F3F4F6;
+            --border-color: #E5E7EB;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --border-radius: 12px;
+            --border-radius-sm: 8px;
+            --transition: all 0.3s ease;
+            --gradient: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .chat-icon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--gradient);
+            color: var(--white);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            z-index: 1000;
+            font-size: 24px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(79, 70, 229, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
+        }
+
+        .chat-icon:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-lg), 0 0 20px rgba(79, 70, 229, 0.4);
+        }
+
+        .chat-container {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 380px;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 999;
+            max-height: 80vh;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            animation: slideIn 0.3s ease-out;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .chat-header {
+            background: var(--gradient);
+            color: var(--white);
+            padding: 18px 20px;
+            font-weight: 600;
+            font-size: 18px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+        }
+
+        .header-main {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .chat-tabs {
+            display: flex;
+            gap: 2px;
+            padding: 0 10px;
+        }
+
+        .chat-tab {
+            padding: 8px 16px;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0.8;
+            background: rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .chat-tab.active {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .chat-tab:not(.active):hover {
+            opacity: 0.9;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .chat-tab.disabled {
+            cursor: not-allowed;
+        }
+
+        .chat-tab.disabled::after {
+            content: "Coming Soon";
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            opacity: 0;
+            transition: var(--transition);
+            pointer-events: none;
+        }
+
+        .chat-tab.disabled:hover::after {
+            opacity: 1;
+            top: -25px;
+        }
+
+        .chat-header .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            opacity: 0.95;
+            transition: var(--transition);
+        }
+
+        .chat-header .logo:hover {
+            opacity: 1;
+            transform: scale(1.02);
+        }
+
+        .chat-header .logo i {
+            font-size: 24px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .chat-header .actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .chat-header .actions i {
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 16px;
+            padding: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-header .actions i:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .suggestion-chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+            padding: 0 10px;
+        }
+
+        .suggestion-chip {
+            background: var(--white);
+            color: var(--primary-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid var(--primary-light);
+            white-space: nowrap;
+            animation: fadeIn 0.3s ease-out;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .suggestion-chip:hover {
+            background: var(--gradient);
+            color: var(--white);
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message-container {
+            display: flex;
+            flex-direction: column;
+            max-width: 85%;
+            animation: messageIn 0.3s ease-out;
+        }
+
+        @keyframes messageIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .user-container {
+            align-self: flex-end;
+        }
+
+        .bot-container {
+            align-self: flex-start;
+        }
+
+        .message-bubble {
+            padding: 12px 16px;
+            border-radius: var(--border-radius-sm);
+            font-size: 14px;
+            line-height: 1.5;
+            position: relative;
+            margin-bottom: 2px;
+            transition: var(--transition);
+            max-width: 85%;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .message-bubble:hover {
+            transform: translateY(-2px);
+        }
+
+        .user-message {
+            background: var(--gradient);
+            color: var(--white);
+            border-radius: 18px 18px 0 18px;
+            align-self: flex-end;
+            margin-left: auto;
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        .bot-message {
+            background: var(--white);
+            color: var(--text-color);
+            border-radius: 18px 18px 18px 0;
+            border: 1px solid var(--border-color);
+            animation: slideInLeft 0.3s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .quick-replies {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .quick-reply {
+            background: var(--white);
+            color: var(--primary-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid var(--primary-light);
+            margin: 4px;
+            animation: fadeIn 0.3s ease-out;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .quick-reply:hover {
+            background: var(--gradient);
+            color: var(--white);
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            margin-top: 8px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 12px;
+        }
+
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .card-description {
+            font-size: 13px;
+            color: var(--light-text);
+        }
+
+        .message-info {
+            font-size: 11px;
+            color: var(--light-text);
+            margin-top: 4px;
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+
+        .message-container:hover .message-info {
+            opacity: 1;
+        }
+
+        .user-info {
+            text-align: right;
+            margin-right: 8px;
+        }
+
+        .bot-info {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-left: 8px;
+        }
+
+        .bot-info img {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+
+        .bot-message a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .bot-message a:hover {
+            text-decoration: underline;
+        }
+
+        .pdf-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--white);
+            color: var(--primary-color);
+            padding: 10px 20px;
+            border-radius: 12px;
+            margin-top: 12px;
+            font-size: 14px;
+            transition: var(--transition);
+            text-decoration: none;
+            box-shadow: var(--shadow-sm);
+            border: 2px solid var(--primary-light);
+            font-weight: 500;
+        }
+
+        .pdf-link i {
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .pdf-link:hover {
+            background: var(--gradient);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            text-decoration: none;
+            border-color: transparent;
+        }
+
+        .pdf-link:hover i {
+            transform: translateX(3px);
+        }
+
+        .pdf-link:active {
+            transform: translateY(0);
+        }
+
+        .typing-indicator {
+            background: var(--white);
+            padding: 12px 16px;
+            border-radius: 18px;
+            display: none;
+            align-items: center;
+            gap: 4px;
+            width: fit-content;
+            margin: 10px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: block;
+            animation: typing 1s infinite;
+        }
+
+        @keyframes typing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            background: var(--white);
+            border-top: 1px solid var(--border-color);
+            position: relative;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 30px;
+            outline: none;
+            font-size: 14px;
+            background: var(--white);
+            transition: var(--transition);
+        }
+
+        .chat-input input:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        .chat-input button {
+            background: var(--gradient);
+            color: var(--white);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .chat-input button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .chat-input button:active {
+            transform: translateY(0);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .chat-container {
+                width: calc(100% - 40px);
+                right: 20px;
+                bottom: 90px;
+            }
+
+            .chat-icon {
+                right: 20px;
+                bottom: 20px;
+            }
+        }
+
+        .chatbox {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+            max-height: 60vh;
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            scroll-behavior: smooth;
+        }
+
+        .chatbox::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chatbox::-webkit-scrollbar-track {
+            background: var(--light-gray);
+            border-radius: 10px;
+        }
+
+        .chatbox::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 10px;
+        }
+
+        .chatbox::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+
+        /* Question Generator Styles */
+        .question-gen-container {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+            padding: 20px;
+            background: var(--bg-color);
+            height: 100%;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        .question-gen-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .question-gen-container::-webkit-scrollbar-track {
+            background: var(--light-gray);
+            border-radius: 10px;
+        }
+
+        .question-gen-container::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 10px;
+        }
+
+        .question-gen-container::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+
+        .form-group {
+            background: var(--white);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            margin-bottom: 0;
+        }
+
+        .form-group:hover {
+            box-shadow: var(--shadow);
+            transform: translateY(-1px);
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-size: 14px;
+            transition: var(--transition);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .form-select:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            background: var(--white);
+        }
+
+        .form-select:disabled {
+            background: var(--light-gray);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .form-select option {
+            background: var(--white);
+            color: var(--text-color);
+            padding: 8px;
+        }
+
+        .generate-btn {
+            background: var(--gradient);
+            color: var(--white);
+            border: none;
+            padding: 14px 28px;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 20px;
+            margin-bottom: 0;
+            box-shadow: var(--shadow);
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+
+        .generate-btn i {
+            font-size: 18px;
+        }
+
+        .generated-question {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: var(--shadow);
+            white-space: pre-wrap;
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            border: 1px solid var(--border-color);
+            display: none;
+        }
+
+        .generated-question h3 {
+            color: var(--primary-color);
+            font-size: 16px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .generated-question h3 i {
+            color: var(--primary-color);
+        }
+
+        .generated-question p {
+            color: var(--text-color);
+            font-size: 14px;
+        }
+
+        .question-container {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e0 #f8f9fa;
+        }
+
+        .question-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .question-container::-webkit-scrollbar-track {
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .question-container::-webkit-scrollbar-thumb {
+            background-color: #cbd5e0;
+            border-radius: 4px;
+            border: 2px solid #f8f9fa;
+        }
+
+        .loading-spinner {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            gap: 15px;
+        }
+
+        .loading-spinner i {
+            color: var(--primary-color);
+            font-size: 24px;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-spinner span {
+            color: var(--text-color);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: rgba(254, 226, 226, 0.5);
+            color: #dc2626;
+            padding: 12px 15px;
+            border-radius: var(--border-radius-sm);
+            margin: 15px 0;
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            display: none;
+            font-size: 14px;
+        }
+
+        .error-message.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .alert {
+            padding: 12px 15px;
+            border-radius: var(--border-radius-sm);
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        .alert-danger {
+            background: rgba(254, 226, 226, 0.5);
+            color: #dc2626;
+            border: 1px solid rgba(220, 38, 38, 0.2);
+        }
+
+        .question-metadata {
+            margin-bottom: 20px;
+            background: var(--light-gray);
+            border-radius: var(--border-radius-sm);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .metadata-header {
+            background: var(--gradient);
+            color: white;
+            padding: 10px 15px;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .metadata-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            padding: 12px 15px;
+        }
+
+        .metadata-item {
+            font-size: 14px;
+            color: var(--text-color);
+        }
+
+        .metadata-item span {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .question-content-text {
+            background: white;
+            padding: 15px;
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--border-color);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-top: 15px;
+            box-shadow: var(--shadow-sm);
+        }
+        .progress-container {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        
+        #downloadPdfButton:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #66BB6A, #388E3C);
+        }
+
+
+    </style>
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<body>
+    
+    <div class="chat-icon" onclick="toggleChat()" id="chatIcon">
+        <i class="fas fa-comment-dots"></i>
+    </div>
+    
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">
+            <div class="header-main">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <span>AuraAI™</span>
+                </div>
+                <div class="actions">
+                    <i class="fas fa-times" onclick="toggleChat()"></i>
+                </div>
+            </div>
+            <div class="chat-tabs">
+                <div class="chat-tab active" onclick="switchTab('chat')">
+                    <i class="fas fa-comments"></i> Chat
+                </div>
+                <div class="chat-tab" onclick="switchTab('question')">
+                    <i class="fas fa-magic"></i> Question Gen
+                </div>
+                <div class="chat-tab" onclick="switchTab('custom')">
+                    <i class="fas fa-pen"></i> Custom Text
+                </div>
+            </div>
+            
+        </div>
+        <div class="chatbox" id="chatbox">
+            <!-- Initial greeting message -->
+            <div class="message-container bot-container">
+                <div class="message-bubble bot-message">
+                    Hello! I'm AuraAI™, an intelligent assistant for Outcome-Based Education (OBE). How can I help you today?
+                </div>
+                <div class="message-info bot-info">
+                    <i class="fas fa-robot"></i>
+                    <span>AuraAI</span>
+                </div>
+                <div class="suggestion-chips">
+                    <div class="suggestion-chip" onclick="sendSuggestion('Show all students in year 2')">Students in Year 2</div>
+                    <div class="suggestion-chip" onclick="sendSuggestion('What is CS208?')">About CS208</div>
+                    <div class="suggestion-chip" onclick="sendSuggestion('Who teaches Computer Networks?')">Computer Networks Faculty</div>
+                </div>
+            </div>
+        </div>
+        <div class="question-gen-container" id="questionGenContainer">
+            <form id="questionGenForm">
+                <div class="form-group">
+                    <label for="course">
+                        <i class="fas fa-book"></i> Select Course
+                    </label>
+                    <select class="form-select" id="course" name="course" required>
+                        <option value="">Choose a course...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="co">
+                        <i class="fas fa-bullseye"></i> Course Outcome (CO)
+                    </label>
+                    <select class="form-select" id="co" name="co" required disabled>
+                        <option value="">Select CO...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="unit">
+                        <i class="fas fa-bookmark"></i> Unit
+                    </label>
+                    <select class="form-select" id="unit" name="unit" required disabled>
+                        <option value="">Choose unit...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="knowledgeLevel">
+                        <i class="fas fa-brain"></i> Knowledge Level
+                    </label>
+                    <select class="form-select" id="knowledgeLevel" name="knowledgeLevel" required>
+                        <option value="">Select level...</option>
+                        <option value="Remember">Remember</option>
+                        <option value="Understand">Understand</option>
+                        <option value="Apply">Apply</option>
+                        <option value="Analyze">Analyze</option>
+                        <option value="Evaluate">Evaluate</option>
+                        <option value="Create">Create</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="marks">
+                        <i class="fas fa-star"></i> Marks
+                    </label>
+                    <select class="form-select" id="marks" name="marks" required>
+                        <option value="">Select marks...</option>
+                        <option value="2">2 Marks</option>
+                        <option value="3">3 Marks</option>
+                        <option value="5">5 Marks</option>
+                        <option value="7.5">7.5 Marks</option>
+                        <option value="10">10 Marks</option>
+                        <option value="12.5">12.5 Marks</option>
+                        <option value="15">15 Marks</option>
+                    </select>
+                </div>
+                <button type="submit" class="generate-btn">
+                    <i class="fas fa-wand-magic-sparkles"></i>
+                    Generate Question
+                </button>
+            </form>
+            <div class="loading-spinner">
+                <i class="fas fa-spinner"></i>
+                <span>Generating question...</span>
+            </div>
+            <div class="error-message"></div>
+            <div class="generated-question" style="display: none;">
+                <p id="questionText"></p>
+            </div>
+        </div>
+        <div class="question-gen-container" id="customTextContainer" style="display: none;">
+            <form id="customTextForm">
+                <div class="form-group">
+                    <label for="unitText"><i class="fas fa-align-left"></i> Paste Unit Content</label>
+                    <textarea id="unitText" class="form-select" rows="6" placeholder="Enter topic or unit content..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="questionCount"><i class="fas fa-list-ol"></i> Number of Questions</label>
+                    <input type="number" id="questionCount" class="form-select" min="1"  required>
+                </div>
+                
+                <div id="questionDetailsContainer"></div>
+                
+                <button type="submit" class="generate-btn">
+                    <i class="fas fa-wand-magic-sparkles"></i>
+                    Generate Custom Questions
+                </button>
+            </form>
+            <div class="loading-spinner" id="customLoading">
+                <i class="fas fa-spinner"></i>
+                <span>Generating question...</span>
+            </div>
+            <div class="error-message" id="customError"></div>
+            <div class="progress-container" id="customProgress" style="display: none;">
+                <label style="font-weight: bold;">Generating Questions...</label>
+                <div style="height: 10px; background: #eee; border-radius: 5px; overflow: hidden; margin-top: 5px;">
+                    <div id="customProgressBar" style="height: 100%; width: 0%; background: #007bff; transition: width 0.3s;"></div>
+                </div>
+                <div id="customProgressText" style="margin-top: 5px; font-size: 14px;"></div>
+            </div>
+            <div id="paperHeaderInputs" style="
+                margin-bottom: 20px;
+                border: 1px solid #ddd;
+                background: #f9f9f9;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+                max-width: 700px;
+                margin-left: auto;
+                margin-right: auto;
+            ">
+
+                <div style="text-align: center; margin-top: 10px;">
+                    <p style="font-weight: bold; margin-bottom: 5px;">Enter the Subject Title</p>
+                    <input type="text" id="subjectTitle" placeholder="Subject Title (e.g., Full Stack Development)" style="width: 80%; padding: 8px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc;"><br>
+
+                    <p style="font-weight: bold; margin-bottom: 5px;">Enter the Assessment Title</p>
+                    <input type="text" id="assessmentTitle" placeholder="Test Title (eg: CAT – II)" style="width: 80%; padding: 8px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc;"><br>
+
+                    <p style="font-weight: bold; margin-bottom: 5px;">Enter the Date of Conduction</p>
+                    <input type="text" id="examDate" placeholder="Exam Date" style="width: 50%; padding: 8px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc;"><br>
+
+                    <p style="font-weight: bold; margin-bottom: 5px;">Enter the Total Marks Allotted</p>
+                    <input type="text" id="totalMarks" placeholder="Total Marks" style="width: 50%; padding: 8px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc;">
+                </div>
+            </div>
+                   
+            <div class="generated-question" id="customResult">
+                <p id="customQuestionText" contenteditable="true" style="border: 1px solid #ccc; padding: 10px; min-height: 200px;"></p>
+                <p style="font-size: 12px; color: gray; text-align: right;">✏️You can edit the questions before downloading the PDF.</p>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button id="downloadPdfButton" style="
+                        display: none;
+                        background: linear-gradient(135deg, #4CAF50, #2E7D32);
+                        color: white;
+                        border: none;
+                        padding: 10px 20px;
+                        font-size: 15px;
+                        font-weight: 500;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                        transition: all 0.3s ease;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 8px;
+                    ">
+                        <i class="fas fa-file-download"></i> Download as PDF
+                    </button>
+                </div>                                           
+            </div>          
+        </div>        
+        <div class="typing-indicator" id="typingIndicator">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="query" placeholder="Ask me something...">
+            <button id="send">
+                <span>Send</span>
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+
+        function toggleChat() {
+            const chatContainer = document.getElementById("chatContainer");
+            chatContainer.style.display = chatContainer.style.display === "flex" ? "none" : "flex";
+            if (chatContainer.style.display === "flex") {
+                document.getElementById("query").focus();
+            }
+        }
+
+        document.getElementById("send").addEventListener("click", sendMessage);
+        document.getElementById("query").addEventListener("keypress", function(e) {
+            if (e.key === "Enter") {
+                sendMessage();
+            }
+        });
+
+        function showTypingIndicator() {
+            document.getElementById("typingIndicator").style.display = "block";
+            const chatbox = document.getElementById("chatbox");
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            document.getElementById("typingIndicator").style.display = "none";
+        }
+
+        function getCurrentTime() {
+            const now = new Date();
+            return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function appendMessage(isUser, message, time = getCurrentTime()) {
+            const chatbox = document.getElementById("chatbox");
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message-container ${isUser ? 'user-container' : 'bot-container'}`;
+            
+            const messageContent = `
+                <div class="message-bubble ${isUser ? 'user-message' : 'bot-message'}">
+                    ${message}
+                </div>
+                <div class="message-info ${isUser ? 'user-info' : 'bot-info'}">
+                    ${isUser ? time : '<i class="fas fa-robot"></i><span>AuraAI</span>'}
+                </div>
+            `;
+            
+            messageDiv.innerHTML = messageContent;
+            chatbox.appendChild(messageDiv);
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        function sendMessage() {
+            const queryInput = document.getElementById("query");
+            const userMessage = queryInput.value.trim();
+            if (userMessage === "") return;
+
+            
+            queryInput.value = "";
+            
+           
+            appendMessage(true, userMessage);
+            
+            
+            showTypingIndicator();
+
+            
+            fetch("chatbot.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: userMessage })
+            })
+            .then(response => response.json())
+            .then(data => {
+               
+                hideTypingIndicator();
+                
+                if (data && data.length > 0) {
+                    
+                    data.forEach(message => {
+                        if (message.text) {
+                           
+                            let processedText = processBotMessage(message.text);
+                            appendMessage(false, processedText);
+                        }
+                    });
+                } else {
+                    appendMessage(false, "I'm sorry, I couldn't process your request.");
+                }
+                
+                
+                setupPdfDownloadLinks();
+            })
+            .catch(error => {
+                
+                hideTypingIndicator();
+                
+                console.error("Error:", error);
+                appendMessage(false, "Error connecting to bot. Please make sure the Rasa server is running.");
+            });
+        }
+        
+        function processBotMessage(text) {
+            
+            let processedText = text.replace(/\[Download PDF\]\(([^)]+)\)/g, '<a href="$1" class="pdf-link" target="_blank"><i class="fas fa-file-pdf"></i> Download Report</a>');
+            
+           
+            processedText = processedText.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+            
+            return processedText;
+        }
+        
+        function setupPdfDownloadLinks() {
+            const chatbox = document.getElementById("chatbox");
+            const links = chatbox.querySelectorAll('a[href*="pdf_reports"]');
+            
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.open(this.href, '_blank');
+                });
+            });
+        }
+
+        function sendSuggestion(text) {
+            document.getElementById("query").value = text;
+            sendMessage();
+        }
+
+        
+        if (!localStorage.getItem('welcomeTourShown')) {
+            setTimeout(() => {
+                const welcomeMessages = [
+                    "👋 Welcome to AuraAI! I'm here to help you with:",
+                    "📚 Student Information - Try asking 'Who is [student name]?'",
+                    "👨‍🏫 Faculty Details - Ask 'Who teaches [subject]?'",
+                    "📝 Course Information - Try 'What is [course code]?'",
+                    "Need help? Just ask!"
+                ];
+                
+                let delay = 0;
+                welcomeMessages.forEach((msg, index) => {
+                    setTimeout(() => {
+                        appendMessage(false, msg);
+                    }, delay);
+                    delay += 1500;
+                });
+                
+                localStorage.setItem('welcomeTourShown', 'true');
+            }, 2000);
+        }
+
+       
+        setTimeout(() => {
+            if (document.getElementById("chatContainer").style.display !== "flex") {
+                toggleChat();
+            }
+        }, 1000);
+
+        function switchTab(mode) {
+    const tabs = document.querySelectorAll('.chat-tab');
+    tabs.forEach(tab => tab.classList.remove('active'));
+
+    const chatbox = document.getElementById('chatbox');
+    const questionGen = document.getElementById('questionGenContainer');
+    const customText = document.getElementById('customTextContainer');
+    const typingIndicator = document.getElementById('typingIndicator');
+    const chatInput = document.querySelector('.chat-input');
+
+    chatbox.style.display = 'none';
+    questionGen.style.display = 'none';
+    customText.style.display = 'none';
+    chatInput.style.display = 'none';
+
+    if (mode === 'chat') {
+        tabs[0].classList.add('active');
+        chatbox.style.display = 'flex';
+        chatInput.style.display = 'flex';
+    } else if (mode === 'question') {
+        tabs[1].classList.add('active');
+        questionGen.style.display = 'flex';
+    } else if (mode === 'custom') {
+        tabs[2].classList.add('active');
+        customText.style.display = 'flex';
+    }
+}
+
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            window.addEventListener('error', function(event) {
+                if (event.filename && event.filename.includes('extensions.kamatil.com')) {
+                    console.log('Ignored error from browser extension:', event.message);
+                    event.preventDefault();
+                    return true;
+                }
+            }, true);
+            
+            // Fetch courses on page load
+            fetch('question_gen.php?action=get_courses')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const courseSelect = document.getElementById('course');
+                        data.data.forEach(course => {
+                            const option = document.createElement('option');
+                            option.value = course.code;
+                            option.textContent = `${course.code} - ${course.name}`;
+                            courseSelect.appendChild(option);
+                        });
+                    }
+                })
+                .catch(error => console.error('Error fetching courses:', error));
+
+            
+            document.getElementById('course').addEventListener('change', function() {
+                const courseCode = this.value;
+                const coSelect = document.getElementById('co');
+                const unitSelect = document.getElementById('unit');
+                
+                console.log('Selected course:', courseCode); // Debug log
+                
+                
+                if (!courseCode) {
+                    coSelect.innerHTML = '<option value="">Select CO...</option>';
+                    unitSelect.innerHTML = '<option value="">Choose unit...</option>';
+                    coSelect.disabled = true;
+                    unitSelect.disabled = true;
+                    return;
+                }
+
+                // Fetch COs
+                fetch(`question_gen.php?action=get_cos&course_code=${courseCode}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('CO data:', data); // Debug log
+                        coSelect.innerHTML = '<option value="">Select CO...</option>';
+                        if (data.success) {
+                            data.data.forEach(co => {
+                                const option = document.createElement('option');
+                                option.value = co.id;
+                                option.textContent = `CO${co.co_number}`;
+                                coSelect.appendChild(option);
+                            });
+                            coSelect.disabled = false;
+                        }
+                    })
+                    .catch(error => console.error('Error fetching COs:', error));
+
+                // Fetch units
+                fetch(`question_gen.php?action=get_units&course_code=${courseCode}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Units data:', data); // Debug log
+                        unitSelect.innerHTML = '<option value="">Choose unit...</option>';
+                        if (data.success && data.data && data.data.length > 0) {
+                            data.data.forEach(unit => {
+                                const option = document.createElement('option');
+                                option.value = unit.id;
+                                option.textContent = `Unit ${unit.unit_number}: ${unit.unit_description ? unit.unit_description.substring(0, 50) + '...' : ''}`;
+                                unitSelect.appendChild(option);
+                            });
+                            unitSelect.disabled = false;
+                        } else {
+                            console.log('No units found or error:', data); // Debug log
+                            unitSelect.innerHTML = '<option value="">No units available</option>';
+                            unitSelect.disabled = true;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching units:', error);
+                        unitSelect.innerHTML = '<option value="">Error loading units</option>';
+                        unitSelect.disabled = true;
+                    });
+            });
+
+            
+            document.getElementById('questionCount').addEventListener('input', function () {
+                const count = parseInt(this.value);
+                const container = document.getElementById('questionDetailsContainer');
+                container.innerHTML = ''; // Clear previous
+
+                for (let i = 0; i < count; i++) {
+                    const group = document.createElement('div');
+                    group.className = 'form-group';
+                    group.innerHTML = `
+                        <label>Question ${i + 1}</label>
+                        <div style="display: flex; gap: 10px;">
+                            <select name="marks[]" class="form-select" required>
+                                <option value="">Select Marks</option>
+                                <option value="2">2</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                            </select>
+                            <select name="knowledge_levels[]" class="form-select" required>
+                                <option value="">Knowledge Level</option>
+                                <option value="Remember">Remember</option>
+                                <option value="Understand">Understand</option>
+                                <option value="Apply">Apply</option>
+                                <option value="Analyze">Analyze</option>
+                                <option value="Evaluate">Evaluate</option>
+                                <option value="Create">Create</option>
+                            </select>
+                        </div>
+                    `;
+                    container.appendChild(group);
+                }
+            });
+
+
+
+            document.getElementById('customTextForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const text = document.getElementById('unitText').value.trim();
+                const markInputs = document.querySelectorAll('select[name="marks[]"]');
+                const levelInputs = document.querySelectorAll('select[name="knowledge_levels[]"]');
+
+                const marks = Array.from(markInputs).map(select => select.value);
+                const levels = Array.from(levelInputs).map(select => select.value);
+
+                const loading = document.getElementById('customLoading');
+                const progress = document.getElementById('customProgress');
+                const progressBar = document.getElementById('customProgressBar');
+                const progressText = document.getElementById('customProgressText');
+                const result = document.getElementById('customResult');
+                const error = document.getElementById('customError');
+                const output = document.getElementById('customQuestionText');
+
+                // Validation
+                if (!text || marks.includes('') || levels.includes('')) {
+                    error.textContent = 'Please complete all question settings.';
+                    error.classList.add('active');
+                    return;
+                }
+
+                // Reset UI
+                error.classList.remove('active');
+                result.style.display = 'none';
+                loading.style.display = 'none'; // hide old spinner
+                progress.style.display = 'block';
+                progressBar.style.width = '0%';
+                progressText.innerText = 'Starting...';
+                output.innerHTML = '';
+
+                const total = marks.length;
+                let questions = [];
+
+                for (let i = 0; i < total; i++) {
+                    progressText.innerText = `Generating question ${i + 1} of ${total}...`;
+                    progressBar.style.width = `${((i / total) * 100).toFixed(1)}%`;
+
+                    try {
+                        const res = await fetch('qp_gen.php', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                custom_mode: true,
+                                unit_text: text,
+                                marks: [marks[i]],
+                                knowledge_levels: [levels[i]]
+                            })
+                        });
+
+                        const data = await res.json();
+                        if (data.success && data.questions && data.questions.length > 0) {
+                            questions.push(`<b>Q${i + 1}:</b> ${data.questions[0]}`);
+                        } else {
+                            questions.push(`<b>Q${i + 1}:</b> ⚠️ Error: Could not generate`);
+                        }
+                    } catch (err) {
+                        questions.push(`<b>Q${i + 1}:</b> ⚠️ Server error`);
+                    }
+                }
+
+                // Finalize progress
+                progressBar.style.width = '100%';
+                progressText.innerText = 'All questions generated.';
+
+                output.innerHTML = questions.join('<br><br>');
+                result.style.display = 'block';
+
+                // ✅ Now show the PDF button
+                document.getElementById('downloadPdfButton').style.display = 'inline-block';
+
+            });
+
+            document.getElementById('downloadPdfButton').addEventListener('click', function() {
+                const subjectTitle = document.getElementById('subjectTitle').value || 'Full Stack Development';
+                const assessmentTitle = document.getElementById('assessmentTitle').value || 'Internal Assessment – II';
+                const examDate = document.getElementById('examDate').value || '07.05.2024';
+                const totalMarks = document.getElementById('totalMarks').value || '25 Marks';
+
+                const headerHtml = `
+                    <div style="text-align: center;">
+                        <h2 style="margin-bottom: 0;">PUDUCHERRY TECHNOLOGICAL UNIVERSITY</h2>
+                        <h3 style="margin: 0;">DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING</h3>
+                        <p style="margin: 5px 0;">
+                            ${subjectTitle} - ${assessmentTitle}
+                            <br>Date: ${examDate} | Marks: ${totalMarks}
+                        </p>
+                    </div>
+                    <hr style="margin: 10px 0;">
+                `;
+
+                const questionsHtml = document.getElementById('customQuestionText').innerHTML;
+
+                const fullHtml = `
+                    ${headerHtml}
+                    <div style="margin-top: 20px;">
+                        ${questionsHtml}
+                    </div>
+                `;
+
+                const element = document.createElement('div');
+                element.innerHTML = fullHtml;
+
+                const opt = {
+                    margin:       0.5,
+                    filename:     'Generated_Question_Paper.pdf',
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2 },
+                    jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+                };
+
+                html2pdf().from(element).set(opt).save();
+            });
+
+
+
+         
+            document.getElementById('questionGenForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const loadingSpinner = document.querySelector('.loading-spinner');
+                const generatedQuestion = document.querySelector('.generated-question');
+                const questionText = document.getElementById('questionText');
+                
+                // Show loading state
+                loadingSpinner.style.display = 'flex';
+                generatedQuestion.style.display = 'none';
+
+                
+                const formData = {
+                    unit: document.getElementById('unit').value,
+                    co: document.getElementById('co').value,
+                    knowledge_level: document.getElementById('knowledgeLevel').value,
+                    marks: document.getElementById('marks').value
+                };
+
+                console.log('Sending form data:', formData); // Debug log
+
+              
+                fetch('question_gen.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                })
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    loadingSpinner.style.display = 'none';
+                    
+                    
+                    const errorMessage = document.querySelector('.error-message');
+                    errorMessage.classList.remove('active');
+                    
+                    if (data.success) {
+                        displayQuestions(data);
+                    } else {
+                        errorMessage.textContent = data.error || 'Failed to generate question';
+                        errorMessage.classList.add('active');
+                        generatedQuestion.style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    loadingSpinner.style.display = 'none';
+                    const errorMessage = document.querySelector('.error-message');
+                    errorMessage.textContent = 'Failed to communicate with the server';
+                    errorMessage.classList.add('active');
+                    generatedQuestion.style.display = 'none';
+                    console.error('Error:', error);
+                });
+            });
+        });
+
+        function displayQuestions(response) {
+            const generatedQuestion = document.querySelector('.generated-question');
+            const errorMessage = document.querySelector('.error-message');
+            const questionText = document.getElementById('questionText');
+            
+            if (response.error) {
+                questionText.innerHTML = `
+                    <div class="alert alert-danger">
+                        Error: ${response.error || 'Failed to generate question'}
+                    </div>
+                `;
+                generatedQuestion.style.display = 'block';
+                return;
+            }
+
+            console.log('Response data:', response.data); 
+
+           
+            const metadataHtml = `
+                <div class="question-metadata">
+                    <div class="metadata-header">${response.data.course}</div>
+                    <div class="metadata-grid">
+                        <div class="metadata-item"><span>Unit:</span> ${response.data.unit_number}</div>
+                        <div class="metadata-item"><span>CO:</span> ${response.data.co}</div>
+                        <div class="metadata-item"><span>Level:</span> ${response.data.knowledge_level}</div>
+                        <div class="metadata-item"><span>Marks:</span> ${response.data.marks}</div>
+                    </div>
+                </div>
+            `;
+
+            // Use the raw_question if available, otherwise parse from the formatted question
+            if (response.data.raw_question) {
+                
+                let cleanQuestion = response.data.raw_question;
+                
+                
+                cleanQuestion = cleanQuestion.replace(/\b(word count|marks allocation|learning outcomes|CO\d+|remember to|ensure that|to maximize|provide specific)\b.*$/im, '');
+                
+                
+                cleanQuestion = cleanQuestion.replace(/\b(remember|note:|please note|hint:|tip:).*$/im, '');
+                
+                
+                cleanQuestion = cleanQuestion.replace(/\b\d+-\d+ words\b.*$/i, '');
+                
+                
+                cleanQuestion = cleanQuestion.replace(/\bin your answer,.*$/im, '');
+                cleanQuestion = cleanQuestion.replace(/\byour (answer|response) should.*$/im, '');
+                
+                
+                cleanQuestion = cleanQuestion.trim().replace(/\n{2,}/g, '\n');
+                
+                questionText.innerHTML = metadataHtml + `<div class="question-content-text">${cleanQuestion.replace(/\n/g, '<br>')}</div>`;
+            } else {
+                // Parse and display questions from the formatted question
+                const questionContent = response.data.question;
+                console.log('Question text:', questionContent); 
+
+                // Extract the actual question content - skip the metadata part
+                const questionLines = questionContent.split('\n\n');
+                let actualQuestion = '';
+                
+                
+                let foundQuestion = false;
+                for (let i = 0; i < questionLines.length; i++) {
+                    const line = questionLines[i].trim();
+                    
+                    if (!line || 
+                        line.includes("Questions for") || 
+                        line.includes("Unit ") && line.length < 10 ||
+                        line.includes("CO") && line.length < 5 ||
+                        line.includes("Level:") ||
+                        line.includes("marks")) {
+                        continue;
+                    }
+                    
+                    // Found the actual question content
+                    foundQuestion = true;
+                    actualQuestion += line + '\n\n';
+                }
+
+                console.log('Extracted question:', actualQuestion); 
+
+                if (foundQuestion && actualQuestion.trim()) {
+                    questionText.innerHTML = metadataHtml + actualQuestion.trim();
+                } else {
+                    // Fallback: display the whole response if we couldn't extract the question
+                    questionText.innerHTML = metadataHtml + `
+                        <div style="color: var(--primary-color); font-weight: 500; margin-top: 10px;">
+                            ${questionContent.replace(/\n/g, '<br>')}
+                        </div>
+                    `;
+                }
+            }
+
+            // Show question display
+            generatedQuestion.style.display = 'block';
+            errorMessage.classList.remove('active');
+        }
+    </script>
+</body>
+</html>

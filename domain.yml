@@ -1,0 +1,69 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - mood_great
+  - mood_unhappy
+  - bot_challenge
+  - faculty_subject
+  - faculty_for_subject
+  - student_info
+  - student_by_name
+  - students_by_year
+  - students_by_semester
+  - students_by_section
+  - students_by_batch
+
+entities:
+  - faculty_name
+  - subject_name
+  - register_no
+  - student_name
+  - year
+  - semester
+  - section
+  - batch
+
+actions:
+  - utter_greet
+  - utter_cheer_up
+  - utter_did_that_help
+  - utter_happy
+  - utter_goodbye
+  - utter_iamabot
+  - action_fetch_faculty_subject
+  - action_fetch_faculty_for_subject
+  - action_default_fallback
+  - action_fetch_student_info
+  - action_fetch_student_by_name
+  - action_fetch_students_by_year
+  - action_fetch_students_by_semester
+  - action_fetch_students_by_section
+  - action_fetch_students_by_batch
+
+responses:
+  utter_greet:
+  - text: "Hi, I'm AuraAI™. How can I assist you today?"
+
+  utter_cheer_up:
+  - text: "Here is something to cheer you up:"
+    image: "https://i.imgur.com/nGF1WwC.jpg"
+
+  utter_did_that_help:
+  - text: "Did that help you?"
+
+  utter_happy:
+  - text: "Great, carry on!"
+
+  utter_goodbye:
+  - text: "Bye"
+
+  utter_iamabot:
+  - text: "Hi, I'm AuraAI™, your intelligent assistant for Outcome-Based Education (OBE). How can I assist you today?"
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

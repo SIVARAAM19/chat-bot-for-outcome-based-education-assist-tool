@@ -1,0 +1,86 @@
+version: "3.1"
+
+stories:
+- story: happy path
+  steps:
+  - intent: greet
+  - action: action_greeting
+  - intent: mood_great
+  - action: utter_happy
+  - intent: goodbye
+  - action: action_goodbye
+
+- story: sad path 1
+  steps:
+  - intent: greet
+  - action: action_greeting
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+
+- story: sad path 2
+  steps:
+  - intent: greet
+  - action: action_greeting
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+  - action: utter_did_that_help
+  - intent: deny
+  - action: action_goodbye
+
+- story: faculty subject path
+  steps:
+  - intent: faculty_subject
+  - action: action_faculty_query
+
+- story: faculty for subject path
+  steps:
+  - intent: faculty_for_subject
+  - action: action_faculty_query
+
+- story: student info path
+  steps:
+  - intent: student_info
+  - action: action_student_query
+
+- story: student by name path
+  steps:
+  - intent: student_by_name
+  - action: action_student_query
+
+- story: students by year path
+  steps:
+  - intent: students_by_year
+  - action: action_student_query
+
+- story: students by semester path
+  steps:
+  - intent: students_by_semester
+  - action: action_student_query
+
+- story: students by section path
+  steps:
+  - intent: students_by_section
+  - action: action_student_query
+
+- story: students by batch path
+  steps:
+  - intent: students_by_batch
+  - action: action_student_query
+
+- story: students by type path
+  steps:
+  - intent: students_by_type
+  - action: action_student_query
+
+- story: query router fallback
+  steps:
+  - intent: nlu_fallback
+  - action: action_query_router
+
+- story: how are you path
+  steps:
+  - intent: ask_howru
+  - action: utter_howru
